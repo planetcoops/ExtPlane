@@ -10,7 +10,7 @@ public:
     FloatDataRef(QObject *parent, QString name, XPLMDataRef ref);
     float value();
     void setValue(float newValue);
-    virtual void updateValue();
+    virtual bool updateValue();
     virtual QString valueString();
     virtual void setValue(QString &newValue);
 private:

@@ -19,7 +19,7 @@ QVector<int> & IntArrayDataRef::value() {
     return _values;
 }
 
-void IntArrayDataRef::updateValue() {
+bool IntArrayDataRef::updateValue() {
     int valuesCopied = XPLMGetDatavi(_ref, _valueArray, 0, _length);
     Q_ASSERT(valuesCopied == _length);
 
@@ -30,7 +30,11 @@ void IntArrayDataRef::updateValue() {
             notequal = true;
         }
     }
-    if (notequal) emit changed(this);
+    if (notequal) {
+        emit changed(this);
+        return true;
+    }
+    return false;
 }
 
 QString IntArrayDataRef::valueString() {

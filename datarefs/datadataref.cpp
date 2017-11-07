@@ -17,7 +17,7 @@ QByteArray &DataDataRef::value() {
     return _value;
 }
 
-void DataDataRef::updateValue() {
+bool DataDataRef::updateValue() {
     // Make sure it's time to update again based on the accuracy
     if(this->accuracy() == 0 || _lastUpdate.elapsed() > this->accuracy()) {
         // Get a new length and check if our underlying struct needs to be updated
@@ -35,8 +35,10 @@ void DataDataRef::updateValue() {
         if (_newValue != _value) {
             _value = _newValue;
             emit changed(this);
+            return true;
         }
     }
+    return false;
 }
 
 void DataDataRef::setValue(QByteArray &newValue) {

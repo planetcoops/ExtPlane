@@ -17,7 +17,7 @@ public:
     XPLMDataRef ref();
     int subscribers();
     void setSubscribers(int subs);
-    virtual void updateValue() = 0;
+    virtual bool updateValue() = 0;
     void setWritable(bool cw);
     bool isWritable();
     virtual QString valueString() = 0;

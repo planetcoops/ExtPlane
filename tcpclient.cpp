@@ -71,7 +71,6 @@ void TcpClient::readClient() {
                         connect(ref, SIGNAL(changed(DataRef*)), this, SLOT(refChanged(DataRef*)));
                         _subscribedRefs.insert(ref);
                         ref->setAccuracy(accuracy);
-                        //TODO: why is ref->updateValue() not sufficient here?
                         if(ref->type() == xplmType_Float) {
                             _refValueF[ref] = qobject_cast<FloatDataRef*>(ref)->value();
                         } else if(ref->type() == xplmType_Int) {
@@ -84,6 +83,9 @@ void TcpClient::readClient() {
                             _refValueIA[ref] = qobject_cast<IntArrayDataRef*>(ref)->value();
                         } else if(ref->type() == xplmType_Data) {
                             _refValueB[ref] = qobject_cast<DataDataRef*>(ref)->value();
+                        }
+                        if (!ref->updateValue()) {
+                            sendRef(ref); // Send initial value to client
                         }
                         INFO << "Subscribed to " << ref->name() << ", accuracy " << accuracy << ", type " << ref->typeString();
                     } else {
@@ -267,6 +269,11 @@ void TcpClient::refChanged(DataRef *ref) {
         INFO << "Ref type " << ref->type() << " not supported (this should not happen!)";
         return;
     }
+    sendRef(ref);
+}
+
+void TcpClient::sendRef(DataRef *ref) {
+    Q_ASSERT(_subscribedRefs.contains(ref));
     QByteArray block;
     QTextStream out(&block, QIODevice::WriteOnly);
     out << "u" << ref->typeString() << " " << ref->name() << " " << ref->valueString() << "\n";
@@ -285,6 +292,7 @@ QSet<QString> TcpClient::listRefs() {
 
     return refNames;
 }
+
 DataRef *TcpClient::getSubscribedRef(QString name) {
     foreach(DataRef* r, _subscribedRefs.values()) {
         if(r->name()==name)

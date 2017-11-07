@@ -27,7 +27,7 @@ QVector<float> & FloatArrayDataRef::value() {
     return _values;
 }
 
-void FloatArrayDataRef::updateValue() {
+bool FloatArrayDataRef::updateValue() {
     int valuesCopied = XPLMGetDatavf(_ref, _valueArray, 0, _length);
     Q_ASSERT(valuesCopied == _length);
 
@@ -38,7 +38,11 @@ void FloatArrayDataRef::updateValue() {
             notequal = true;
         }
     }
-    if (notequal) emit changed(this);
+    if (notequal) {
+        emit changed(this);
+        return true;
+    }
+    return false;
 }
 
 QString FloatArrayDataRef::valueString() {

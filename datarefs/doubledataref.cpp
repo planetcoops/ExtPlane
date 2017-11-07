@@ -10,12 +10,14 @@ double DoubleDataRef::value() {
     return _value;
 }
 
-void DoubleDataRef::updateValue() {
+bool DoubleDataRef::updateValue() {
    double newValue = XPLMGetDatad(_ref);
     if(_value != newValue) {
         _value = newValue;
         emit changed(this);
+        return true;
     }
+    return false;
 }
 
 void DoubleDataRef::setValue(double newValue) {

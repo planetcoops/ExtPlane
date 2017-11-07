@@ -19,7 +19,7 @@ public:
     FloatArrayDataRef(QObject *parent, QString name, XPLMDataRef ref);
     ~FloatArrayDataRef();
     QVector<float> & value();
-    virtual void updateValue();
+    virtual bool updateValue();
     virtual QString valueString();
     virtual void setValue(QString &newValue);
 private:

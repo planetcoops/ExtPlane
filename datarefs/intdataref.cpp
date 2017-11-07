@@ -11,12 +11,14 @@ int IntDataRef::value() {
     return _value;
 }
 
-void IntDataRef::updateValue() {
+bool IntDataRef::updateValue() {
    int newValue = XPLMGetDatai(_ref);
     if(_value != newValue) {
         _value = newValue;
         emit changed(this);
+        return true;
     }
+    return false;
 }
 
 void IntDataRef::setValue(int newValue) {

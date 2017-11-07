@@ -10,12 +10,14 @@ float FloatDataRef::value() {
     return _value;
 }
 
-void FloatDataRef::updateValue() {
+bool FloatDataRef::updateValue() {
    float newValue = XPLMGetDataf(_ref);
     if(_value != newValue) {
         _value = newValue;
         emit changed(this);
+        return true;
     }
+    return false;
 }
 
 void FloatDataRef::setValue(float newValue) {

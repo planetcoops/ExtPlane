@@ -10,7 +10,7 @@ public:
     DoubleDataRef(QObject *parent, QString name, XPLMDataRef ref);
     double value();
     void setValue(double newValue);
-    virtual void updateValue();
+    virtual bool updateValue();
     virtual QString valueString();
     virtual void setValue(QString &newValue);
 private:

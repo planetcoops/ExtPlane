@@ -30,6 +30,7 @@ signals:
     void discoed(TcpClient *client);
     void setFlightLoopInterval(float newInterval);
 private:
+    void sendRef(DataRef *ref);
     DataRef *getSubscribedRef(QString name);
     QTcpSocket *_socket;
     QSet<DataRef*> _subscribedRefs;
