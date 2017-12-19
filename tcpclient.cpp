@@ -19,7 +19,7 @@ TcpClient::TcpClient(QObject *parent, QTcpSocket *socket, DataRefProvider *refPr
 
     QByteArray block;
     QTextStream out(&block, QIODevice::WriteOnly);
-    out << "EXTPLANE 1\n";
+    out << "EXTPLANE 1.1\n";
     out.flush();
     _socket->write(block);
 }
