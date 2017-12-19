@@ -41,21 +41,23 @@ CONFIG(debug, debug|release) {
 }
 
 unix:!macx {
-     DEFINES += APL=0 IBM=0 LIN=1
+    DEFINES += APL=0 IBM=0 LIN=1
+    QMAKE_POST_LINK += $(COPY_FILE) $(TARGET) extplane.xpl
 }
 
 macx {
-     DEFINES += APL=1 IBM=0 LIN=0
-     QMAKE_LFLAGS += -dynamiclib
-     # -flat_namespace -undefined warning <- not needed or recommended anymore.
+    DEFINES += APL=1 IBM=0 LIN=0
+    QMAKE_LFLAGS += -dynamiclib
+    # -flat_namespace -undefined warning <- not needed or recommended anymore.
 
-     # Build for multiple architectures.
-     # The following line is only needed to build universal on PPC architectures.
-     # QMAKE_MAC_SDK=/Devloper/SDKs/MacOSX10.4u.sdk
-     # This line defines for wich architectures we build.
-     CONFIG += x86 ppc
-     QMAKE_LFLAGS += -F../XPlaneSDK/Libraries/Mac
-     LIBS += -framework XPLM
+    # Build for multiple architectures.
+    # The following line is only needed to build universal on PPC architectures.
+    # QMAKE_MAC_SDK=/Devloper/SDKs/MacOSX10.4u.sdk
+    # This line defines for wich architectures we build.
+    CONFIG += x86 ppc
+    QMAKE_LFLAGS += -F../XPlaneSDK/Libraries/Mac
+    LIBS += -framework XPLM
+    QMAKE_POST_LINK += $(COPY_FILE) $(TARGET) extplane.xpl
 }
 
 win32 {
@@ -69,9 +71,9 @@ win32 {
     DEFINES += APL=0 IBM=1 LIN=0
     LIBS += -L../XPlaneSDK/Libraries/Win
     DEFINES += NOMINMAX #Qt5 bug
+    QMAKE_POST_LINK += $(COPY_FILE) $(DESTDIR_TARGET) extplane.xpl
 }
 
-QMAKE_POST_LINK += $(COPY_FILE) $(DESTDIR_TARGET) extplane.xpl
 QMAKE_CLEAN += extplane.xpl
 
 SOURCES += main.cpp \
