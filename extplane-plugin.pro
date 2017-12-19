@@ -71,7 +71,7 @@ win32 {
     DEFINES += NOMINMAX #Qt5 bug
 }
 
-QMAKE_POST_LINK += $(COPY_FILE) $(TARGET) extplane.xpl
+QMAKE_POST_LINK += $(COPY_FILE) $(DESTDIR_TARGET) extplane.xpl
 QMAKE_CLEAN += extplane.xpl
 
 SOURCES += main.cpp \
