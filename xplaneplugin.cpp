@@ -9,6 +9,7 @@
 #include "util/console.h"
 #include "customdata/navcustomdata.h"
 #include "customdata/atccustomdata.h"
+#include "customdata/cmdcustomdata.h"
 #include <clocale>
 
 XPlanePlugin::XPlanePlugin(QObject *parent) :
@@ -36,7 +37,7 @@ int XPlanePlugin::pluginStart(char * outName, char * outSig, char *outDesc) {
     // Set plugin info
     INFO << "Plugin started";
     strcpy(outName, "ExtPlane");
-    strcpy(outSig, "org.vranki.extplaneplugin");
+    strcpy(outSig, "com.planetcoops.extplaneplugin");
     strcpy(outDesc, "Read and write X-Plane datarefs from external programs using TCP sockets.");
 
     // Init application and server
@@ -87,6 +88,19 @@ int XPlanePlugin::pluginStart(char * outName, char * outSig, char *outDesc) {
                                                  NULL, NULL,                                    // Float array accessors
                                                  ATCCustomData::DataCallback, NULL,             // Raw data accessors
                                                  NULL, NULL);
+    XPLMRegisterDataAccessor("extplane/command_state",
+                                                 xplmType_Int,                                  // The types we support
+                                                 0,                                             // Writable
+                                                 CmdCustomData::IntCallback, NULL,              // Integer accessors
+                                                 NULL, NULL,                                    // Float accessors
+                                                 NULL, NULL,                                    // Doubles accessors
+                                                 NULL, NULL,                                    // Int array accessors
+                                                 NULL, NULL,                                    // Float array accessors
+                                                 NULL, NULL,                                    // Raw data accessors
+                                                 NULL, NULL);
+    // Register custom command
+    CmdCustomData::commandRef = XPLMCreateCommand("ExtPlane/command", "ExtPlane custom command, e.g. Push to Talk.");
+    XPLMRegisterCommandHandler(CmdCustomData::commandRef, CmdCustomData::CmdHandler, 0, NULL);
 
     app->processEvents();
     return 1;
@@ -173,6 +187,8 @@ void XPlanePlugin::setFlightLoopInterval(float newInterval) {
 }
 
 void XPlanePlugin::pluginStop() {
+    // Unregister custom command
+    XPLMUnregisterCommandHandler(CmdCustomData::commandRef, CmdCustomData::CmdHandler, 0, NULL);
     DEBUG;
     app->processEvents();
     delete server;
