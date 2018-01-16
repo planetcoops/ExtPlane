@@ -14,7 +14,7 @@ TCP protocol.
 * Support for different dataref types: int, float, double, int[], float[], data
 * Simulate key and button presses
 * Execute commands
-* Supports both X-Plane 9 and 10
+* Supports X-Plane 9, 10 & 11
 * Free & open source under GPLv3
 * Client libraries available for Qt (C++), Java and C#
 
@@ -43,24 +43,10 @@ License:
 
 ## Downloads ##
 
-### Ext-Plane Plugin + Panel ###
-
-* Linux 32bit, 15MB
-    * [http://dankrusi.com/downloads/ExtPlane-Panel-v0.1-Linux32.zip](http://goo.gl/BNzoeZ)
-* Linux 64bit, 15MB
-    * [http://dankrusi.com/downloads/ExtPlane-Panel-v0.1-Linux64.zip](http://goo.gl/akBtl4)
-* Windows 32bit, 12MB
-    * [http://dankrusi.com/downloads/ExtPlane-Panel-v0.1-Win32.zip](http://goo.gl/Nupczn)
-* Windows 64bit, 13MB
-    * [http://dankrusi.com/downloads/ExtPlane-Panel-v0.1-Win64.zip](http://goo.gl/6EHtei)
-* OS-X 64bit, 15MB
-    * [http://dankrusi.com/downloads/ExtPlane-Panel-v0.1-OSX64.zip](http://goo.gl/8kLzJg)
-
 ### Ext-Plane Plugin ###
 
-* Linux, Windows, OS-X (32bit & 64bit), 8MB
-    * [http://dankrusi.com/downloads/ExtPlane-Plugin-v0.1.zip](http://goo.gl/e2aU7b)
-
+* Linux, Windows, OS-X (64bit), 6MB
+    * [http://www.planetcoops.com/apps/xp-remote/extplane/ExtPlane.zip](https://goo.gl/JKV5eC)
 
 ## Building ##
 
@@ -78,7 +64,7 @@ sudo apt-get install git build-essential qt5-qmake qt5-default qtbase5-dev
 
 # 2: Download X-Plane SDK and ExtPlane source code from GitHub
 git clone https://github.com/dankrusi/XPlaneSDK.git
-git clone https://github.com/vranki/ExtPlane.git
+git clone https://github.com/planetcoops/ExtPlane.git
 
 # 3: Build project
 cd ExtPlane
@@ -101,7 +87,7 @@ cp extplane.xpl /path/to/xplane/Resources/plugins/extplane.xpl
 
 # 2: Download source code from GitHub
 git clone https://github.com/dankrusi/XPlaneSDK.git
-git clone https://github.com/vranki/ExtPlane.git
+git clone https://github.com/planetcoops/ExtPlane.git
 
 # 3: Build project
 cd ExtPlane
@@ -120,7 +106,7 @@ make
 
 # 2: Download source code from GitHub
 git clone https://github.com/dankrusi/XPlaneSDK.git
-git clone https://github.com/vranki/ExtPlane.git
+git clone https://github.com/planetcoops/ExtPlane.git
 
 # 3: Build project
 cd ExtPlane
