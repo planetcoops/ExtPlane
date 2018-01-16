@@ -16,13 +16,16 @@ TCP protocol.
 * Execute commands
 * Supports both X-Plane 9 and 10
 * Free & open source under GPLv3
-* Client libraries available for Qt (c++), Java and C#
+* Client libraries available for Qt (C++), Java and C#
 
 Known users:
 
 * ExtPlane-Panel
     * A fully-featured interface for ExtPlane with tons of flight instruments and more
     * https://github.com/vranki/ExtPlane-Panel
+* XP Remote
+    * Remote control & voice command app for Android
+    * https://play.google.com/store/apps/details?id=com.planetcoops.android.xplaneremote
 * Copilot X
     * Voice command app for Android
     * https://play.google.com/store/apps/details?id=com.appropel.xplanevoice
@@ -312,10 +315,13 @@ defines such as `TERMIOS_AVAIALABLE` to help with this.
 
 ## Contact / Feedback ##
 
+This Fork:
+- Planet Coops <support@planetcoops.com>
+
 Original Author:
 - Ville Ranki <ville.ranki@iki.fi>
 
-Contributors:
+Original Contributors:
 - Dan Krusi <dan.krusi@nerves.ch>
 - Bob Gates
 
