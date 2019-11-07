@@ -1,4 +1,5 @@
 #include "tcpclient.h"
+#include "tcpserver.h"
 #include "datarefs/floatdataref.h"
 #include "datarefs/floatarraydataref.h"
 #include "datarefs/intdataref.h"
@@ -13,13 +14,14 @@ TcpClient::TcpClient(QObject *parent, QTcpSocket *socket, DataRefProvider *refPr
         QObject(parent), _socket(socket), _refProvider(refProvider)
 {
     INFO << "Client connected from " << socket->peerAddress().toString();
+    _socket->setSocketOption(QAbstractSocket::LowDelayOption, 1); // TCP_NODELAY
     connect(_socket, SIGNAL(readyRead()), this, SLOT(readClient()));
     connect(_socket, SIGNAL(disconnected()), this, SLOT(deleteLater()));
     connect(_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
 
     QByteArray block;
     QTextStream out(&block, QIODevice::WriteOnly);
-    out << "EXTPLANE 1.1\n";
+    out << "EXTPLANE " << EXTPLANE_PROTOCOL << "\n";
     out.flush();
     _socket->write(block);
 }
@@ -84,7 +86,7 @@ void TcpClient::readClient() {
                         } else if(ref->type() == xplmType_Data) {
                             _refValueB[ref] = qobject_cast<DataDataRef*>(ref)->value();
                         }
-                        if (!ref->updateValue()) {
+                        if (!ref->updateValue() || accuracy != 0) {
                             sendRef(ref); // Send initial value to client
                         }
                         INFO << "Subscribed to " << ref->name() << ", accuracy " << accuracy << ", type " << ref->typeString();
@@ -217,7 +219,7 @@ void TcpClient::refChanged(DataRef *ref) {
         long length = values.size();
         
         for (int i=0; i<length;i++){
-            if (qAbs(values[i] - _refValueFA[ref][i]) > ref->accuracy()) {
+            if (qAbs(values[i] - _refValueFA[ref][i]) >= ref->accuracy()) {
                 bigenough = true;
                 break;
             }
@@ -238,7 +240,7 @@ void TcpClient::refChanged(DataRef *ref) {
         long length = values.size();
 
         for (int i=0; i<length;i++){
-            if (qAbs(values[i] - _refValueIA[ref][i]) > ref->accuracy()) {
+            if (qAbs(values[i] - _refValueIA[ref][i]) >= ref->accuracy()) {
                 bigenough = true;
                 break;
             }

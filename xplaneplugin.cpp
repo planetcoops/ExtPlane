@@ -11,6 +11,41 @@
 #include "customdata/atccustomdata.h"
 #include "customdata/cmdcustomdata.h"
 #include <clocale>
+#include <XPLMUtilities.h>
+
+#if defined(_MSC_VER) && _MSC_VER < 1900
+
+#define snprintf c99_snprintf
+#define vsnprintf c99_vsnprintf
+
+__inline int c99_vsnprintf(char *outBuf, size_t size, const char *format, va_list ap)
+{
+    int count = -1;
+
+    if (size != 0)
+        count = _vsnprintf_s(outBuf, size, _TRUNCATE, format, ap);
+    if (count == -1)
+        count = _vscprintf(format, ap);
+
+    return count;
+}
+
+__inline int c99_snprintf(char *outBuf, size_t size, const char *format, ...)
+{
+    int count;
+    va_list ap;
+
+    va_start(ap, format);
+    count = c99_vsnprintf(outBuf, size, format, ap);
+    va_end(ap);
+
+    return count;
+}
+
+#endif
+
+static char __log_printf_buffer[4096];
+#define log_printf(fmt, ...) snprintf(__log_printf_buffer, 4096, "ExtPlane-Plugin: " fmt, __VA_ARGS__), XPLMDebugString(__log_printf_buffer)
 
 XPlanePlugin::XPlanePlugin(QObject *parent) :
     QObject(parent), argc(0), argv(0), app(0), server(0), flightLoopInterval(0.31f) { // Default to 30hz
@@ -46,6 +81,9 @@ int XPlanePlugin::pluginStart(char * outName, char * outSig, char *outDesc) {
 
     server = new TcpServer(this, this);
     connect(server, SIGNAL(setFlightLoopInterval(float)), this, SLOT(setFlightLoopInterval(float)));
+
+    // Log version information
+    log_printf("Listening on TCP port %d using protocol %s compiled %s %s\n", EXTPLANE_PORT, EXTPLANE_PROTOCOL, __DATE__, __TIME__);
 
     // Register the nav custom data accessors
     XPLMRegisterDataAccessor("extplane/navdata/5km",

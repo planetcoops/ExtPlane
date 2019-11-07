@@ -9,6 +9,7 @@
 /**
   * Creates the TCP socket and manages client connections
   */
+#define EXTPLANE_PROTOCOL "1.1"
 #define EXTPLANE_PORT 51000
 
 class TcpClient;
